@@ -141,7 +141,7 @@ export const dynamicRoutes = [
     permissions: ['monitor:job:list'],
     children: [
       {
-        path: 'index/:jobId(\\d+)',
+        path: 'index',
         component: () => import('@/views/monitor/job/log'),
         name: 'JobLog',
         meta: { title: '调度日志', activeMenu: '/monitor/job' }
@@ -166,17 +166,12 @@ export const dynamicRoutes = [
 
 // 防止连续点击多次路由报错
 let routerPush = Router.prototype.push;
-let routerReplace = Router.prototype.replace;
-// push
 Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(err => err)
 }
-// replace
-Router.prototype.replace = function push(location) {
-  return routerReplace.call(this, location).catch(err => err)
-}
 
 export default new Router({
+  base: "/ruoyi-vue-web",
   mode: 'history', // 去掉url中的#
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes

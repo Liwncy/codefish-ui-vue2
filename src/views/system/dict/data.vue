@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="字典名称" prop="dictType">
         <el-select v-model="queryParams.dictType">
           <el-option
@@ -39,7 +39,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -49,7 +48,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -60,7 +58,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -71,7 +68,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -81,7 +77,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-close"
           size="mini"
           @click="handleClose"
@@ -95,8 +90,8 @@
       <el-table-column label="字典编码" align="center" prop="dictCode" />
       <el-table-column label="字典标签" align="center" prop="dictLabel">
         <template slot-scope="scope">
-          <span v-if="(scope.row.listClass == '' || scope.row.listClass == 'default') && (scope.row.cssClass == '' || scope.row.cssClass == null)">{{ scope.row.dictLabel }}</span>
-          <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass" :class="scope.row.cssClass">{{ scope.row.dictLabel }}</el-tag>
+          <span v-if="scope.row.listClass == '' || scope.row.listClass == 'default'">{{scope.row.dictLabel}}</span>
+          <el-tag v-else :type="scope.row.listClass == 'primary' ? '' : scope.row.listClass">{{scope.row.dictLabel}}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="字典键值" align="center" prop="dictValue" />
@@ -251,8 +246,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        dictName: undefined,
         dictType: undefined,
-        dictLabel: undefined,
         status: undefined
       },
       // 表单参数

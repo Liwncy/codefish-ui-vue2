@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="公告标题" prop="noticeTitle">
         <el-input
           v-model="queryParams.noticeTitle"
@@ -37,7 +37,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -47,7 +46,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -58,7 +56,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"

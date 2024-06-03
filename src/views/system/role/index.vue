@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="角色名称" prop="roleName">
         <el-input
           v-model="queryParams.roleName"
@@ -55,7 +55,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -65,7 +64,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -76,7 +74,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -87,7 +84,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -135,7 +131,9 @@
             v-hasPermi="['system:role:remove']"
           >删除</el-button>
           <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
-            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+            <span class="el-dropdown-link">
+              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="handleDataScope" icon="el-icon-circle-check"
                 v-hasPermi="['system:role:edit']">数据权限</el-dropdown-item>

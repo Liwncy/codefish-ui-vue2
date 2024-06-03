@@ -20,7 +20,6 @@
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="tree"
-            node-key="id"
             default-expand-all
             highlight-current
             @node-click="handleNodeClick"
@@ -29,7 +28,7 @@
       </el-col>
       <!--用户数据-->
       <el-col :span="20" :xs="24">
-        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+        <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="80px">
           <el-form-item label="用户名称" prop="userName">
             <el-input
               v-model="queryParams.userName"
@@ -75,8 +74,8 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
           </el-form-item>
         </el-form>
 
@@ -84,9 +83,7 @@
           <el-col :span="1.5">
             <el-button
               type="primary"
-              plain
               icon="el-icon-plus"
-              size="mini"
               @click="handleAdd"
               v-hasPermi="['system:user:add']"
             >新增</el-button>
@@ -94,9 +91,7 @@
           <el-col :span="1.5">
             <el-button
               type="success"
-              plain
               icon="el-icon-edit"
-              size="mini"
               :disabled="single"
               @click="handleUpdate"
               v-hasPermi="['system:user:edit']"
@@ -105,9 +100,7 @@
           <el-col :span="1.5">
             <el-button
               type="danger"
-              plain
               icon="el-icon-delete"
-              size="mini"
               :disabled="multiple"
               @click="handleDelete"
               v-hasPermi="['system:user:remove']"
@@ -116,9 +109,7 @@
           <el-col :span="1.5">
             <el-button
               type="info"
-              plain
               icon="el-icon-upload2"
-              size="mini"
               @click="handleImport"
               v-hasPermi="['system:user:import']"
             >导入</el-button>
@@ -126,9 +117,7 @@
           <el-col :span="1.5">
             <el-button
               type="warning"
-              plain
               icon="el-icon-download"
-              size="mini"
               @click="handleExport"
               v-hasPermi="['system:user:export']"
             >导出</el-button>
@@ -166,21 +155,21 @@
           >
             <template slot-scope="scope" v-if="scope.row.userId !== 1">
               <el-button
-                size="mini"
                 type="text"
                 icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:user:edit']"
               >修改</el-button>
               <el-button
-                size="mini"
                 type="text"
                 icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:user:remove']"
               >删除</el-button>
-              <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
-                <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+              <el-dropdown @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:user:resetPwd', 'system:user:edit']">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+                </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="handleResetPwd" icon="el-icon-key"
                     v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
@@ -203,7 +192,7 @@
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
@@ -433,8 +422,7 @@ export default {
         ],
         password: [
           { required: true, message: "用户密码不能为空", trigger: "blur" },
-          { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' },
-          { pattern: /^[^<>"'|\\]+$/, message: "不能包含非法字符：< > \" ' \\\ |", trigger: "blur" }
+          { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' }
         ],
         email: [
           {
@@ -536,8 +524,6 @@ export default {
     resetQuery() {
       this.dateRange = [];
       this.resetForm("queryForm");
-      this.queryParams.deptId = undefined;
-      this.$refs.tree.setCurrentKey(null);
       this.handleQuery();
     },
     // 多选框选中数据
@@ -578,8 +564,8 @@ export default {
         this.form = response.data;
         this.postOptions = response.posts;
         this.roleOptions = response.roles;
-        this.$set(this.form, "postIds", response.postIds);
-        this.$set(this.form, "roleIds", response.roleIds);
+        this.form.postIds = response.postIds;
+        this.form.roleIds = response.roleIds;
         this.open = true;
         this.title = "修改用户";
         this.form.password = "";
@@ -592,12 +578,7 @@ export default {
         cancelButtonText: "取消",
         closeOnClickModal: false,
         inputPattern: /^.{5,20}$/,
-        inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
-        inputValidator: (value) => {
-          if (/<|>|"|'|\||\\/.test(value)) {
-            return "不能包含非法字符：< > \" ' \\\ |"
-          }
-        },
+        inputErrorMessage: "用户密码长度必须介于 5 和 20 之间"
       }).then(({ value }) => {
           resetUserPwd(row.userId, value).then(response => {
             this.$modal.msgSuccess("修改成功，新密码是：" + value);

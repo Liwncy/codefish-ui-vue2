@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="部门名称" prop="deptName">
         <el-input
           v-model="queryParams.deptName"
@@ -29,7 +29,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -39,7 +38,6 @@
       <el-col :span="1.5">
         <el-button
           type="info"
-          plain
           icon="el-icon-sort"
           size="mini"
           @click="toggleExpandAll"
@@ -297,13 +295,9 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "修改部门";
-        listDeptExcludeChild(row.deptId).then(response => {
-          this.deptOptions = this.handleTree(response.data, "deptId");
-          if (this.deptOptions.length == 0) {
-            const noResultsOptions = { deptId: this.form.parentId, deptName: this.form.parentName, children: [] };
-            this.deptOptions.push(noResultsOptions);
-          }
-        });
+      });
+      listDeptExcludeChild(row.deptId).then(response => {
+        this.deptOptions = this.handleTree(response.data, "deptId");
       });
     },
     /** 提交按钮 */

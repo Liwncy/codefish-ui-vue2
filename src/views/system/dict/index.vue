@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="字典名称" prop="dictName">
         <el-input
           v-model="queryParams.dictName"
@@ -55,7 +55,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -65,7 +64,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -76,7 +74,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -87,7 +84,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -97,7 +93,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-refresh"
           size="mini"
           @click="handleRefreshCache"

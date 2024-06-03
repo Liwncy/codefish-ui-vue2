@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="参数名称" prop="configName">
         <el-input
           v-model="queryParams.configName"
@@ -50,7 +50,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -60,7 +59,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -71,7 +69,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -82,7 +79,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -92,7 +88,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-refresh"
           size="mini"
           @click="handleRefreshCache"
@@ -107,7 +102,7 @@
       <el-table-column label="参数主键" align="center" prop="configId" />
       <el-table-column label="参数名称" align="center" prop="configName" :show-overflow-tooltip="true" />
       <el-table-column label="参数键名" align="center" prop="configKey" :show-overflow-tooltip="true" />
-      <el-table-column label="参数键值" align="center" prop="configValue" :show-overflow-tooltip="true" />
+      <el-table-column label="参数键值" align="center" prop="configValue" />
       <el-table-column label="系统内置" align="center" prop="configType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.configType"/>

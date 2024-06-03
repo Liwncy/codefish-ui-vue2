@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="表名称" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
@@ -38,28 +38,15 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-download"
           size="mini"
-          :disabled="multiple"
           @click="handleGenTable"
           v-hasPermi="['tool:gen:code']"
         >生成</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="openCreateTable"
-          v-hasRole="['admin']"
-        >创建</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="info"
-          plain
           icon="el-icon-upload"
           size="mini"
           @click="openImportTable"
@@ -69,7 +56,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -80,7 +66,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -119,8 +104,16 @@
         :show-overflow-tooltip="true"
         width="120"
       />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
+      <el-table-column prop="createTime" label="创建时间">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="updateTime" label="更新时间">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -183,14 +176,12 @@
       </el-tabs>
     </el-dialog>
     <import-table ref="import" @ok="handleQuery" />
-    <create-table ref="create" @ok="handleQuery" />
   </div>
 </template>
 
 <script>
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
 import importTable from "./importTable";
-import createTable from "./createTable";
 import hljs from "highlight.js/lib/highlight";
 import "highlight.js/styles/github-gist.css";
 hljs.registerLanguage("java", require("highlight.js/lib/languages/java"));
@@ -202,7 +193,7 @@ hljs.registerLanguage("sql", require("highlight.js/lib/languages/sql"));
 
 export default {
   name: "Gen",
-  components: { importTable, createTable },
+  components: { importTable },
   data() {
     return {
       // 遮罩层
@@ -280,7 +271,7 @@ export default {
           this.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
         });
       } else {
-        this.$download.zip("/tool/gen/batchGenCode?tables=" + tableNames, "ruoyi.zip");
+        this.$download.zip("/tool/gen/batchGenCode?tables=" + tableNames, "ruoyi");
       }
     },
     /** 同步数据库操作 */
@@ -295,10 +286,6 @@ export default {
     /** 打开导入表弹窗 */
     openImportTable() {
       this.$refs.import.show();
-    },
-    /** 打开创建表弹窗 */
-    openCreateTable() {
-      this.$refs.create.show();
     },
     /** 重置按钮操作 */
     resetQuery() {

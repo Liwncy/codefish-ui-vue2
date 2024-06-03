@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch "label-width="80px">
       <el-form-item label="菜单名称" prop="menuName">
         <el-input
           v-model="queryParams.menuName"
@@ -29,7 +29,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -39,7 +38,6 @@
       <el-col :span="1.5">
         <el-button
           type="info"
-          plain
           icon="el-icon-sort"
           size="mini"
           @click="toggleExpandAll"
@@ -134,13 +132,14 @@
                 trigger="click"
                 @show="$refs['iconSelect'].reset()"
               >
-                <IconSelect ref="iconSelect" @selected="selected" :active-icon="form.icon" />
+                <IconSelect ref="iconSelect" @selected="selected" />
                 <el-input slot="reference" v-model="form.icon" placeholder="点击选择图标" readonly>
                   <svg-icon
                     v-if="form.icon"
                     slot="prefix"
                     :icon-class="form.icon"
-                    style="width: 25px;"
+                    class="el-input__icon"
+                    style="height: 32px;width: 16px;"
                   />
                   <i v-else slot="prefix" class="el-icon-search el-input__icon" />
                 </el-input>
@@ -246,7 +245,7 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" v-if="form.menuType != 'F'">
             <el-form-item prop="status">
               <span slot="label">
                 <el-tooltip content="选择停用则路由将不会出现在侧边栏，也不能被访问" placement="top">

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="任务名称" prop="jobName">
         <el-input
           v-model="queryParams.jobName"
@@ -39,7 +39,6 @@
       <el-col :span="1.5">
         <el-button
           type="primary"
-          plain
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
@@ -49,7 +48,6 @@
       <el-col :span="1.5">
         <el-button
           type="success"
-          plain
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
@@ -60,7 +58,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -71,7 +68,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -81,7 +77,6 @@
       <el-col :span="1.5">
         <el-button
           type="info"
-          plain
           icon="el-icon-s-operation"
           size="mini"
           @click="handleJobLog"
@@ -129,7 +124,9 @@
             v-hasPermi="['monitor:job:remove']"
           >删除</el-button>
           <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['monitor:job:changeStatus', 'monitor:job:query']">
-            <el-button size="mini" type="text" icon="el-icon-d-arrow-right">更多</el-button>
+            <span class="el-dropdown-link">
+              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+            </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="handleRun" icon="el-icon-caret-right"
                 v-hasPermi="['monitor:job:changeStatus']">执行一次</el-dropdown-item>
@@ -200,18 +197,7 @@
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="form.jobId !== undefined">
-            <el-form-item label="状态">
-              <el-radio-group v-model="form.status">
-                <el-radio
-                  v-for="dict in dict.type.sys_job_status"
-                  :key="dict.value"
-                  :label="dict.value"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
+          <el-col :span="24">
             <el-form-item label="执行策略" prop="misfirePolicy">
               <el-radio-group v-model="form.misfirePolicy" size="small">
                 <el-radio-button label="1">立即执行</el-radio-button>
@@ -225,6 +211,17 @@
               <el-radio-group v-model="form.concurrent" size="small">
                 <el-radio-button label="0">允许</el-radio-button>
                 <el-radio-button label="1">禁止</el-radio-button>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="状态">
+              <el-radio-group v-model="form.status">
+                <el-radio
+                  v-for="dict in dict.type.sys_job_status"
+                  :key="dict.value"
+                  :label="dict.value"
+                >{{dict.label}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -264,7 +261,7 @@
           <el-col :span="12">
             <el-form-item label="任务状态：">
               <div v-if="form.status == 0">正常</div>
-              <div v-else-if="form.status == 1">暂停</div>
+              <div v-else-if="form.status == 1">失败</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -454,7 +451,7 @@ export default {
     /** 任务日志列表查询 */
     handleJobLog(row) {
       const jobId = row.jobId || 0;
-      this.$router.push('/monitor/job-log/index/' + jobId)
+      this.$router.push({ path: '/monitor/job-log/index', query: { jobId: jobId } })
     },
     /** 新增按钮操作 */
     handleAdd() {

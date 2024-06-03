@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="任务名称" prop="jobName">
         <el-input
           v-model="queryParams.jobName"
@@ -61,7 +61,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
@@ -72,7 +71,6 @@
       <el-col :span="1.5">
         <el-button
           type="danger"
-          plain
           icon="el-icon-delete"
           size="mini"
           @click="handleClean"
@@ -82,7 +80,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-download"
           size="mini"
           @click="handleExport"
@@ -92,7 +89,6 @@
       <el-col :span="1.5">
         <el-button
           type="warning"
-          plain
           icon="el-icon-close"
           size="mini"
           @click="handleClose"
@@ -217,7 +213,7 @@ export default {
     };
   },
   created() {
-    const jobId = this.$route.params && this.$route.params.jobId;
+    const jobId = this.$route.query.jobId;
     if (jobId !== undefined && jobId != 0) {
       getJob(jobId).then(response => {
         this.queryParams.jobName = response.data.jobName;
